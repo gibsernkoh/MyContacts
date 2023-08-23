@@ -1,42 +1,18 @@
-# Nuxt 3 Minimal Starter
+# My Contact
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This is an app for storing users' contact book.
+New user will need to create an account.
 
-## Setup
+## Stack
 
-Make sure to install the dependencies:
+This project is done using Nuxt3 for the FE (View) and BE(Controller) with Planetscale (Serverless Database)
+
+### How to start
 
 ```bash
-# yarn
-yarn install
 
 # npm
-npm install
-
-# pnpm
-pnpm install
-```
-
-## Development Server
-
-Start the development server on http://localhost:3000
-
-```bash
+npm i
 npm run dev
+
 ```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
