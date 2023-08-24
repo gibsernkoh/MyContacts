@@ -14,7 +14,7 @@
     "daisyui": "^3.6.1",
     "nuxt": "^3.6.5"
   },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.33.1"
+  "stackblitz": {
+    "startCommand": false
   }
 }

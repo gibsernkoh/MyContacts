@@ -1,0 +1,7 @@
+{
+  "startCommand": false,
+  "env": {
+    "SUPABASE_URL": "https://gzbkjcqobjkyzgktwbgx.supabase.co",
+    "SUPABASE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6YmtqY3FvYmpreXpna3R3Ymd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTI3ODMxMjEsImV4cCI6MjAwODM1OTEyMX0.9hwUsM1axarg8AYfBXfApYnDEU1S1IcEi7lJOxFv7lQ"
+  }
+}
