@@ -27,10 +27,10 @@ const emits = defineEmits([
 ]);
 
 const onChange = {
-  salutation: (value) => emits('update:salutation', value),
-  firstname: (value) => emits('update:firstname', value),
-  lastname: (value) => emits('update:lastname', value),
-  email: (value) => emits('update:email', value),
+  salutation: (e) => emits('update:salutation', e.target.value),
+  firstname: (e) => emits('update:firstname', e.target.value),
+  lastname: (e) => emits('update:lastname', e.target.value),
+  email: (e) => emits('update:email', e.target.value),
 };
 </script>
 
@@ -41,14 +41,14 @@ const onChange = {
   </select>
 
   <input
-    value="firstname"
+    :value="firstname"
     placeholder="First name"
     @input="onChange.firstname"
   />
-  <input value="lastname" placeholder="Last name" @input="onChange.lastname" />
+  <input :value="lastname" placeholder="Last name" @input="onChange.lastname" />
 
   <input
-    value="email"
+    :value="email"
     type="email"
     placeholder="Email"
     @input="onChange.email"

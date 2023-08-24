@@ -6,13 +6,17 @@ const firstname = ref('');
 const lastname = ref('');
 const email = ref('');
 const password = ref('');
+const passwordCfm = ref('');
 
 const errorMsg = ref('');
 const successMsg = ref('');
 
 async function signUp() {
   try {
-    const { user, error } = await client.auth.signUp({
+    if (passwordCfm.value !== password.value)
+      throw new Error("Password and Comfirm password does not match");
+
+    const { error } = await client.auth.signUp({
       email: email.value,
       password: password.value,
       options: {
@@ -34,9 +38,15 @@ async function signUp() {
 </script>
 
 <template>
-  <pre>{{ salutation }}</pre>
-  <WidgetsUserForm v-bind="{ salutation, firstname, lastname, email }" />
+
+  <WidgetsUserForm 
+    v-model:salutation="salutation" 
+    v-model:firstname="firstname"
+    v-model:lastname="lastname"
+    v-model:email="email"
+    />
   <input v-model="password" type="password" placeholder="Password" />
+  <input v-model="passwordCfm" type="password" placeholder="Confirm Password" />
 
   <button type="button" class="btn" @click="signUp">Sign Up</button>
   <NuxtLink to="/login">Go to Login</NuxtLink>
