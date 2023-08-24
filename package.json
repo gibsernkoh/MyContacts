@@ -13,8 +13,5 @@
     "@types/node": "^18.17.3",
     "daisyui": "^3.6.1",
     "nuxt": "^3.6.5"
-  },
-  "stackblitz": {
-    "startCommand": false
   }
 }
