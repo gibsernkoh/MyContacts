@@ -20,6 +20,11 @@ async function logout() {
 </script>
 
 <template>
-  This is ur profile: {{ user?.email }}
+  This is ur profile <NuxtLink to="/profile/edit">Edit Profile</NuxtLink>
+
+  <pre>
+  {{ user }}
+  </pre>
+
   <button @click="logout">Logout</button>
 </template>

@@ -1,20 +1,32 @@
 <script setup>
 const client = useSupabaseClient();
 
+const salutation = ref('mr');
+const firstname = ref('');
+const lastname = ref('');
 const email = ref('');
 const password = ref('');
+
 const errorMsg = ref('');
 const successMsg = ref('');
 
 async function signUp() {
   try {
-    const { data, error } = await client.auth.signUp({
+    const { user, error } = await client.auth.signUp({
       email: email.value,
       password: password.value,
+      options: {
+        data: {
+          firstname: firstname.value,
+          lastname: lastname.value,
+          salutation: salutation.value,
+        },
+      },
     });
 
     if (error) throw error;
-    successMsg.value = 'Check your email to confirm your account.';
+
+    successMsg.value = 'Your account is now created.';
   } catch (error) {
     errorMsg.value = error.message;
   }
@@ -22,7 +34,8 @@ async function signUp() {
 </script>
 
 <template>
-  <input v-model="email" type="email" placeholder="Email" />
+  <pre>{{ salutation }}</pre>
+  <WidgetsUserForm v-bind="{ salutation, firstname, lastname, email }" />
   <input v-model="password" type="password" placeholder="Password" />
 
   <button type="button" class="btn" @click="signUp">Sign Up</button>

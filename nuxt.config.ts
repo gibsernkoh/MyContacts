@@ -10,4 +10,5 @@ export default defineNuxtConfig({
       exclude: ['/register'],
     },
   },
+  css: ['@/assets/css/main.css'],
 });
