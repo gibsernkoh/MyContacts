@@ -13,5 +13,16 @@
     "@types/node": "^18.17.3",
     "daisyui": "^3.6.1",
     "nuxt": "^3.6.5"
+  },
+  "dependencies": {
+    "@heroicons/vue": "^2.0.18",
+    "@pinia/nuxt": "^0.4.11",
+    "firebase": "^10.3.0",
+    "mongodb": "^5.8.1",
+    "pinia": "^2.1.6",
+    "slugify": "^1.6.6"
+  },
+  "overrides": {
+    "vue": "latest"
   }
 }

@@ -1,0 +1,3 @@
+<template>
+    Spouse Details
+</template>

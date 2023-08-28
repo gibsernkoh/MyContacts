@@ -1,56 +1,71 @@
 <script setup>
-const client = useSupabaseClient();
+import { useSystemStore } from '@/store'
 
-const salutation = ref('mr');
-const firstname = ref('');
-const lastname = ref('');
-const email = ref('');
-const password = ref('');
+const client = useSupabaseClient();
+const system = useSystemStore();
+
+const payload = ref({
+  email: '',
+  password: '',
+})
+
 const passwordCfm = ref('');
 
-const errorMsg = ref('');
-const successMsg = ref('');
+const loading = ref(false);
 
-async function signUp() {
+async function onRegister() {
   try {
-    if (passwordCfm.value !== password.value)
+    if (passwordCfm.value !== payload.value.password)
       throw new Error("Password and Comfirm password does not match");
 
-    const { error } = await client.auth.signUp({
-      email: email.value,
-      password: password.value,
-      options: {
-        data: {
-          firstname: firstname.value,
-          lastname: lastname.value,
-          salutation: salutation.value,
-        },
-      },
-    });
+    const { error } = await client.auth.signUp(payload.value);
 
     if (error) throw error;
 
-    successMsg.value = 'Your account is now created.';
+    system.push({
+        type: 'success',
+        message: 'Your account is now created.'
+    })
+
+    payload.value.email = '';
+    payload.value.password = '';
+    passwordCfm.value = '';
+    
   } catch (error) {
-    errorMsg.value = error.message;
+    if (error)
+        system.push({
+            type: 'error',
+            message: error.message
+        })
   }
 }
 </script>
 
 <template>
 
-  <WidgetsUserForm 
-    v-model:salutation="salutation" 
-    v-model:firstname="firstname"
-    v-model:lastname="lastname"
-    v-model:email="email"
-    />
-  <input v-model="password" type="password" placeholder="Password" />
-  <input v-model="passwordCfm" type="password" placeholder="Confirm Password" />
+  <UIPanel class="max-w-[400px]">
+    
+    <UIHeadline class="mb-8">
+        Welcome To <b>MY CONTACTS</b>
+    </UIHeadline>
 
-  <button type="button" class="btn" @click="signUp">Sign Up</button>
-  <NuxtLink to="/login">Go to Login</NuxtLink>
+        <div class="table w-[320px]">
+            <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-4 items-center [&>label]:text-right [&>.text-error]:col-start-2 [&>.text-error]:-mt-3">
+                <FormLabel required>E-mail</FormLabel>
+                <FormInput v-model:value="payload.email" :disabled="loading" />
+                
+                <FormLabel required>Password</FormLabel>
+                <FormInput v-model:value="payload.password" type="password" :disabled="loading" />
 
-  <p v-if="errorMsg" class="text-red">{{ errorMsg }}</p>
-  <p v-if="successMsg" class="text-green">{{ successMsg }}</p>
+                <FormLabel required>Confirm Password</FormLabel>
+                <FormInput v-model:value="passwordCfm" type="password" :disabled="loading" />
+
+                <div class="col-span-2 text-center pt-3">
+                    <button class="btn block w-[140px] mx-auto mb-7" :disabled="loading" @click="onRegister">Register</button>
+
+                    <small>Already Registered? <NuxtLink to="/"><u>Login here.</u></NuxtLink></small>
+                </div>
+            </div>
+        </div>
+  </UIPanel>
 </template>
