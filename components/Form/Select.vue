@@ -32,7 +32,7 @@
 
 <template>
     <select :id="id" :value="value" @change="onChange" :disabled="disabled" class="h-[2.5rem] px-3 w-full bg-[field] capitalize">
-        <option v-for="item in list" :value="item.value">{{ item.label }}</option>
+        <option v-for="item in list" :value="item">{{ item }}</option>
     </select>
     <p v-if="error" class="text-error">{{ error }}</p>
 </template>

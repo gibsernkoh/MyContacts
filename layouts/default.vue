@@ -35,7 +35,6 @@
                     <div class="header-menu cursor-pointer flex flex-col [&>*]:py-3 [&>*]:px-4 drop-shadow-lg">
                         <NuxtLink to="/my-contacts">My Contacts</NuxtLink>
                         <NuxtLink to="/my-profile">My Profile</NuxtLink>
-                        <NuxtLink to="/edit-profile">Edit Profile</NuxtLink>
                         <div @click="onLogout" class="border-t-[1px] border-t-slate-500">
                             Logout
                         </div>

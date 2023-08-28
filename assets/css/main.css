@@ -45,7 +45,7 @@ h1 {
 }
 
 .profile-sidemenu {
-    @apply lg:col-start-1 lg:flex-col lg:border-t-[1px] lg:border-t-[#a6adba33] max-w-full overflow-x-auto overflow-y-hidden flex-nowrap;
+    @apply pt-4 lg:pt-0 lg:col-start-1 lg:flex-col lg:border-t-[1px] lg:border-t-[#a6adba33] max-w-full overflow-x-auto overflow-y-hidden flex-nowrap;
 
     & .tab {
         @apply lg:min-w-full lg:text-left lg:justify-start lg:ps-0 lg:py-3 whitespace-nowrap h-auto;

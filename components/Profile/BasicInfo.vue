@@ -23,22 +23,18 @@
     const init = {
         salutation: {
             label: 'Salutation',
+            required: true,
             value: user_metadata?.salutation ?? '-',
             input: {
                 type: 'select',
                 value: user_metadata?.salutation ?? 'Mr.',
                 error: '',
-                options: [{
-                    label: 'Mr.', 
-                    value: 'Mr.' 
-                }, {
-                    label: 'Ms.',
-                    value: 'Ms.',
-                }],
+                options: ['Mr.', 'Ms.'],
             }
         },
         firstname: {
             label: 'First Name',
+            required: true,
             value: user_metadata?.firstname ?? '-',
             input: {
                 type: 'input',
@@ -48,6 +44,7 @@
         },
         lastname: {
             label: 'Last Name',
+            required: true,
             value: user_metadata?.lastname ?? '-',
             input: {
                 type: 'input',
@@ -57,6 +54,7 @@
         },
         email: {
             label: 'Email Address',
+            required: true,
             value: email,
             input: {
                 type: 'input',
@@ -86,7 +84,7 @@
         const keys = Object.keys(fields.value)
 
         keys.forEach(key => {
-            if(fields.value[key].input.value.trim() === '')
+            if(fields.value[key].input.value.trim() === '' && fields.value[key].required)
                 fields.value[key].input.error = `${fields.value[key].label} is required`;
         })
 
@@ -144,23 +142,12 @@
         </div>
         <div class="flex flex-col gap-6">
             <div v-for="field in fields">
-                <b>{{ field.label }}{{ toggleMode?' *':'' }}</b>
-                <div class="py-2">
-                    <FormInput 
-                        v-if="toggleMode && field.input.type === 'input'" 
-                        v-model:value="field.input.value" 
-                        v-model:error="field.input.error"
-                        :disabled="loading"
-                        />
-                    <FormSelect 
-                        v-else-if="toggleMode && field.input.type === 'select'" 
-                        :list="field.input.options" 
-                        v-model:value="field.input.value"
-                        v-model:error="field.input.error" 
-                        :disabled="loading"
-                        />
-                    <span v-else>{{ field.value }}</span>
-                </div>
+                <FormTextToInput 
+                    :toggled="toggleMode" 
+                    :loading="loading" 
+                    :field="field" 
+                    v-model:value="field.input.value"
+                    v-model:error="field.input.error"/>
             </div>
 
             <div v-if="toggleMode" class="flex gap-6">

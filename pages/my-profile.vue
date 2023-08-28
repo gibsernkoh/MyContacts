@@ -15,7 +15,7 @@
     const tabsList = ref([
         { active: true, show: true, label: 'Basic Details' },
         { active: false, show: true, label: 'Additional Details' },
-        { active: false, show: true, label: 'Spouse Details' },
+        { active: false, show: false, label: 'Spouse Details' },
         { active: false, show: true, label: 'Personal Preferences' },
     ])
 
