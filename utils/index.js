@@ -1,31 +1,35 @@
-export const getExpiry = (num, unit) => {
-    const currentDate = new Date();
+export const getDate = (num, unit) => {
+  const currentDate = new Date();
 
-    const nextDate = new Date(currentDate);
+  const nextDate = new Date(currentDate);
 
-    switch(unit) {
-        case 'year': {
-            nextDate.setFullYear(currentDate.getFullYear() + num)
-        }
+  switch (unit) {
+    case 'year': {
+      nextDate.setFullYear(currentDate.getFullYear() + num);
     }
+  }
 
-    return nextDate;
-}
+  return nextDate;
+};
 
-export const getName = name => {
-    const { first, last } = name;
+export const getName = (name) => {
+  const { first, last } = name;
 
-    return `${first} ${last}`;
-}
+  return `${first} ${last}`;
+};
 
-export const getAddress = street => {
-    const values = Object.values(street)
+export const getAddress = (street) => {
+  const values = Object.values(street);
 
-    return values.join(' ');
-}
+  return values.join(' ');
+};
 
-export const getCompletePath = filename => {
-    const runtimeConfig = useRuntimeConfig();
+export const getCompletePath = (filename) => {
+  const runtimeConfig = useRuntimeConfig();
 
-    return runtimeConfig.public.supabase.url + runtimeConfig.public.supabase_profile_folder + filename;
-}
+  return (
+    runtimeConfig.public.supabase.url +
+    runtimeConfig.public.supabase_profile_folder +
+    filename
+  );
+};

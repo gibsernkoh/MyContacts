@@ -1,71 +1,73 @@
-import { defineStore } from 'pinia'
-import { getExpiry } from '@/utils'
+import { defineStore } from 'pinia';
+import { getDate } from '@/utils';
 
 interface FormInterface {
-    username: string;
-    password: string;
-    longSession?: boolean;
+  username: string;
+  password: string;
+  longSession?: boolean;
 }
 
 interface UserPayLoadInterface {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 }
 
 export const useAuthStore = defineStore('auth', {
-    state: () => ({
-        authenticated: false,
-        loading: false,
-        user: null,
-    }),
-    actions: {
-        async loginUser({ username, password, longSession }: FormInterface) {
-            this.loading = true;
+  state: () => ({
+    authenticated: false,
+    loading: false,
+    user: null,
+  }),
+  actions: {
+    async loginUser({ username, password, longSession }: FormInterface) {
+      this.loading = true;
 
-            const body: UserPayLoadInterface = {
-                username,
-                password,
-            };
+      const body: UserPayLoadInterface = {
+        username,
+        password,
+      };
 
-            // if (longSession)
-            //     body['expiresInMins'] = 525960; // TODO: 1 Year
+      // if (longSession)
+      //     body['expiresInMins'] = 525960; // TODO: 1 Year
 
-            const { data, error }: any = await useFetch('/api/user/login', {
-                method: 'post',
-                headers: { 'Content-Type': 'application/json' },
-                body
-            })
+      const { data, error }: any = await useFetch('/api/user/login', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+      });
 
-            this.loading = false;
+      this.loading = false;
 
-            if (error?.value?.data?.message){
-                return error.value.data.message
-            }
-            else if (data?.value?.token) {
-                
+      if (error?.value?.data?.message) {
+        return error.value.data.message;
+      } else if (data?.value?.token) {
+        const token = useCookie(
+          'token',
+          longSession
+            ? {
+                expires: getDate(1, 'year'),
+              }
+            : undefined
+        );
+        token.value = data.value.token;
+        this.authenticated = true;
+      }
+    },
+    async addUser({ username, password }: FormInterface) {
+      this.loading = true;
+    },
+    async logoutUser() {
+      const token = useCookie('token');
 
-                const token = useCookie('token', longSession ? {
-                    expires: getExpiry(1, 'year')
-                } : undefined);
-                token.value = data.value.token;
-                this.authenticated = true;
-            }
+      await useFetch('/api/user/logout', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: <string>token.value,
         },
-        async addUser({ username, password }: FormInterface) {
-            this.loading = true;
-        },
-        async logoutUser () {
-            const token = useCookie('token');
+      });
 
-            await useFetch('/api/user/logout', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': <string>token.value
-                }
-            })
-
-            this.authenticated = false;
-            token.value = null;
-        }
-    }
-})
+      this.authenticated = false;
+      token.value = null;
+    },
+  },
+});
