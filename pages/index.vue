@@ -12,8 +12,8 @@
     const loading = ref(false)
 
     const payload = ref({
-        email: 'gibsernkoh1@gmail.com',
-        password: 'gibsernkoh',
+        email: '',
+        password: '',
         longSession: false,
     })
 
