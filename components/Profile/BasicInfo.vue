@@ -28,7 +28,7 @@
             input: {
                 type: 'select',
                 value: user_metadata?.salutation ?? 'Mr.',
-                error: '',
+                error: null,
                 options: ['Mr.', 'Ms.'],
             }
         },
@@ -39,7 +39,7 @@
             input: {
                 type: 'input',
                 value: user_metadata?.firstname,
-                error: ''
+                error: null
             }
         },
         lastname: {
@@ -49,7 +49,7 @@
             input: {
                 type: 'input',
                 value: user_metadata?.lastname,
-                error: ''
+                error: null
             }
         },
         email: {
@@ -59,7 +59,7 @@
             input: {
                 type: 'input',
                 value: email,
-                error: ''
+                error: null
             }
         },
     }
@@ -67,8 +67,6 @@
     const thumbnail = ref(user_metadata?.thumbnail ?? '');
 
     const fields = ref(structuredClone(init));
-
-    const hasError = computed(() => Object.values(fields.value).filter(field => field.input.error !== '').length !== 0)
 
     const onSave = async _ => {
         emits('update:loading', true)
@@ -83,12 +81,16 @@
         // Validation
         const keys = Object.keys(fields.value)
 
+        let hasError = false;
+
         keys.forEach(key => {
-            if(fields.value[key].input.value.trim() === '' && fields.value[key].required)
+            if(fields.value[key].input.value.trim() === '' && fields.value[key].required) {
                 fields.value[key].input.error = `${fields.value[key].label} is required`;
+                hasError = true;
+            }
         })
 
-        if (!hasError.value) {
+        if (!hasError) {
             const { error } = await client.auth.updateUser({
                 email: email.input.value,
                 data: {
@@ -140,7 +142,7 @@
                 <small class="leading-[0.5em]">(JPG or PNG format with maximum size of 1 MB)</small>
             </div>
         </div>
-        <div class="flex flex-col gap-6">
+        <div class="profile-detail-panel">
             <div v-for="field in fields">
                 <FormTextToInput 
                     :toggled="toggleMode" 

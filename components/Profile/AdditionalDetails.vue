@@ -33,7 +33,7 @@ const init = {
       type: 'input',
       value: user_metadata?.phone ?? '',
       value_type: 'text',
-      error: '',
+      error: null,
     },
   },
   address: {
@@ -44,7 +44,7 @@ const init = {
       type: 'input',
       value: user_metadata?.address,
       value_type: 'text',
-      error: '',
+      error: null,
     },
   },
   country: {
@@ -55,7 +55,7 @@ const init = {
       type: 'select',
       value: user_metadata?.country ?? '',
       options: Countries,
-      error: '',
+      error: null,
     },
   },
   postcode: {
@@ -66,7 +66,7 @@ const init = {
       type: 'input',
       value: user_metadata?.postcode,
       value_type: 'text',
-      error: '',
+      error: null,
     },
   },
   nationality: {
@@ -77,7 +77,7 @@ const init = {
       type: 'select',
       value: user_metadata?.nationality ?? '',
       options: Countries,
-      error: '',
+      error: null,
     },
   },
   dob: {
@@ -88,7 +88,7 @@ const init = {
       value: user_metadata?.dob,
       value_type: 'date',
       max_date,
-      error: '',
+      error: null,
     },
   },
   gender: {
@@ -98,7 +98,7 @@ const init = {
       type: 'select',
       value: user_metadata?.gender ?? 'Male',
       options: ['Male', 'Female'],
-      error: '',
+      error: null,
     },
   },
   marital_status: {
@@ -108,24 +108,20 @@ const init = {
       type: 'select',
       value: user_metadata?.marital_status ?? 'Single',
       options: ['Single', 'Married'],
-      error: '',
+      error: null,
     },
   },
 };
 
 const fields = ref(structuredClone(init));
 
-const hasError = computed(
-  () =>
-    Object.values(fields.value).filter((field) => field.input.error !== '')
-      .length !== 0
-);
-
 const onSave = async (_) => {
   emits('update:loading', true);
 
   // Validation
   const keys = Object.keys(fields.value);
+
+  let hasError = false;
 
   keys.forEach((key) => {
     const input = fields.value[key].input;
@@ -139,9 +135,12 @@ const onSave = async (_) => {
     } else if ('dob' === key && getDiffBetweenToday(input.value, 'year') < 17) {
       input.error = `You will have to be at least, 17 years old`;
     }
+
+    if (input.error)
+      hasError = true
   });
 
-  if (!hasError.value) {
+  if (!hasError) {
     const data = {};
 
     for (const key in fields.value) {
@@ -180,7 +179,7 @@ const onCancel = (_) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-6">
+  <div class="grid grid-cols-[1fr_1fr] gap-6">
     <div v-for="field in fields">
       <FormTextToInput
         :toggled="toggleMode"

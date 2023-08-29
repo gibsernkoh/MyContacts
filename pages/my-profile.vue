@@ -29,6 +29,8 @@ const tabs = computed(() => tabsList.value.filter((tab) => tab.show));
 
 const tab = computed(() => tabsList.value.findIndex((tab) => tab.active));
 
+const isEditable = computed(() => [0, 1].includes(tab.value))
+
 const onTabClick = (e) => {
   const { index } = e.target.dataset;
   const current_active = tabs.value.find((tab) => tab.active);
@@ -45,17 +47,18 @@ const toggleModeChange = (_) => (toggleMode.value = !toggleMode.value);
   <div class="lg:grid lg:grid-cols-[auto_1fr_auto] gap-x-8 lg:gap-x-20 gap-y-6">
     <div class="lg:col-start-2 flex justify-between items-center">
       <h1>My <b>Profile</b></h1>
+
       <button
-        v-if="toggleMode"
-        class="btn"
-        @click="toggleModeChange"
-        :disabled="loading"
-      >
-        Cancel
-      </button>
-      <button v-else class="btn" @click="toggleModeChange" :disabled="loading">
-        Edit
-      </button>
+          v-if="toggleMode"
+          class="btn"
+          @click="toggleModeChange"
+          :disabled="loading"
+        >
+          Cancel
+        </button>
+        <button v-else class="btn" @click="toggleModeChange" :disabled="loading">
+          {{ isEditable ? 'Edit' : 'Add' }}
+        </button>
     </div>
 
     <div class="tabs profile-sidemenu">

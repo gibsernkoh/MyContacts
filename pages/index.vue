@@ -38,12 +38,12 @@
                 await useFetch('/api/keep-session')
             }
 
+            router.push('/my-contacts')
+
             system.push({
                 type: 'success',
                 message: 'Login Successful'
             })
-
-            router.push('/my-contacts')
         }
     }
 </script>

@@ -28,11 +28,11 @@ const error = computed({
 </script>
 
 <template>
-  <div>
+  <div class="profile-into-to-text">
     <b>{{ field.label }}{{ field.required && toggled ? ' *' : '' }}</b>
-    <div class="py-2">
+    <div class="pt-2">
       <FormInput
-        v-if="toggled && field.input.type === 'input'"
+        v-if="toggled && field.input.type !== 'select'"
         v-model:value="value"
         v-model:error="error"
         :type="field.input.value_type ?? 'text'"

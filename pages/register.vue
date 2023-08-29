@@ -57,7 +57,7 @@ async function onRegister() {
                 <FormLabel required>Password</FormLabel>
                 <FormInput v-model:value="payload.password" type="password" :disabled="loading" />
 
-                <FormLabel required>Confirm Password</FormLabel>
+                <FormLabel required>Confirm<br/>Password</FormLabel>
                 <FormInput v-model:value="passwordCfm" type="password" :disabled="loading" />
 
                 <div class="col-span-2 text-center pt-3">
