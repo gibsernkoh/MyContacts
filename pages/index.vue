@@ -1,6 +1,10 @@
 <script setup>
     import { useSystemStore } from '@/store'
 
+    useHead({
+        title: "Login"
+    })
+
     const router = useRouter();
     const client = useSupabaseClient();
     const system = useSystemStore();

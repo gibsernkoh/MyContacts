@@ -9,7 +9,10 @@ import { FunnelIcon } from '@heroicons/vue/24/solid'
 useHead({ title: 'My Contacts' })
 
 const system = useSystemStore();
+
 const { isXS } = storeToRefs(system)
+
+const loading = ref(true);
 
 const contacts = ref([]);
 const current_page = ref(1);
@@ -41,24 +44,29 @@ const contacts_page = computed(() => {
 
 const max_page = computed(() => Math.ceil(filtered_contacts.value.length/per_page.value))
 
-try {
-    const { data, error } = await useFetch(`https://randomuser.me/api/?results=100`)
+onMounted(async () => {
+    
+    try {
+        const data = await $fetch(`https://randomuser.me/api/?results=100`)
 
-    if (data.value?.results)
-        contacts.value = data.value.results.map((d, i) => ({
-                ...d, 
-                formatted_name: getName(d.name), 
-                formatted_address:  getAddress(d.location.street)
-            }))
-    else if(error.value)
-        throw error.value;
+        if (data?.results) {
+            contacts.value = data.results.map((d, i) => ({
+                    ...d, 
+                    formatted_name: getName(d.name), 
+                    formatted_address:  getAddress(d.location.street)
+                }))
 
-} catch (error) {
-    system.push({
-        type: 'error',
-        message: error.message
-    });
-}
+            loading.value = false;
+        }
+    } catch (error) {
+        system.push({
+            type: 'error',
+            message: 'Fail to load contacts'
+        });
+
+        loading.value = false;
+    }
+})
 
 watch(isXS, isXS => {
     if(isXS) per_page.value = 8
@@ -70,44 +78,46 @@ watch([genderFilter, countryFilter], _ => current_page.value = 1)
 </script>
 
 <template>
-    <ClientOnly>
-        
-        <div class="flex justify-between items-center leading-[2.8rem] mb-7">
-            <h1>My <b>Contacts</b></h1>
-            
-            <component :is="isXS ? DropDownDialog : 'v-fragment'">
-                <template #button>
-                    <FunnelIcon class="aspect-square w-[1.25rem]" /> Filter
-                </template>
-                <div class="flex flex-col md:flex-row gap-3">
-                    <select v-model="genderFilter" class="select select-info select-sm capitalize">
-                        <option value="all">All Gender</option>
-                        <option v-for="gender in genderFilters" :value="gender">{{ gender }}</option>
-                    </select>
+        <div v-if="!loading">
+            <div class="flex justify-between items-center leading-[2.8rem] mb-7">
+                <h1>My <b>Contacts</b></h1>
+                
+                <component :is="isXS ? DropDownDialog : 'v-fragment'">
+                    <template #button>
+                        <FunnelIcon class="aspect-square w-[1.25rem]" /> Filter
+                    </template>
+                    <div class="flex flex-col md:flex-row gap-3">
+                        <select v-model="genderFilter" class="select select-info select-sm capitalize">
+                            <option value="all">All Gender</option>
+                            <option v-for="gender in genderFilters" :value="gender">{{ gender }}</option>
+                        </select>
 
-                    <select v-model="countryFilter" class="select select-info select-sm">
-                        <option value="all">All Country</option>
-                        <option v-for="country in countryFilters" :value="country">{{ country }}</option>
-                    </select>
-                </div>
-            </component>
-        </div>
+                        <select v-model="countryFilter" class="select select-info select-sm">
+                            <option value="all">All Country</option>
+                            <option v-for="country in countryFilters" :value="country">{{ country }}</option>
+                        </select>
+                    </div>
+                </component>
+            </div>
 
-        <div class="pb-7">
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-                <div v-for="contact in contacts_page" class="flex flex-col lg:flex-row items-start gap-4 bg-slate-800 border-b-2 border-slate-500 p-4">
-                    <img :src="contact.picture.medium" :alt="contact.formatted_name" />
-                    <div class="overflow-hidden text-sm max-w-full flex flex-col gap-1">
-                        <h2 class="card-title pb-1">{{ contact.formatted_name }}</h2>
-                        <a class="truncate block" :href="`mailto:${contact.email}`" :title="contact.email">{{ contact.email }}</a>
-                        <a class="truncate" :href="`tel:${contact.phone}`">{{ contact.phone }}</a>
-                        <address class="pt-1">{{ contact.formatted_address }}</address>
+            <div class="pb-7">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                    <div v-for="contact in contacts_page" class="flex flex-col lg:flex-row items-start gap-4 bg-slate-800 border-b-2 border-slate-500 p-4">
+                        <img :src="contact.picture.medium" :alt="contact.formatted_name" />
+                        <div class="overflow-hidden text-sm max-w-full flex flex-col gap-1">
+                            <h2 class="card-title pb-1">{{ contact.formatted_name }}</h2>
+                            <a class="truncate block" :href="`mailto:${contact.email}`" :title="contact.email">{{ contact.email }}</a>
+                            <a class="truncate" :href="`tel:${contact.phone}`">{{ contact.phone }}</a>
+                            <address class="pt-1">{{ contact.formatted_address }}</address>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex justify-center">
-                <UIPagination v-model:current_page="current_page" :max_page="max_page" />
+                <div class="flex justify-center">
+                    <UIPagination v-model:current_page="current_page" :max_page="max_page" />
+                </div>
             </div>
         </div>
-    </ClientOnly>
+        <div v-else class="w-full h-[calc(100vh-180px)] flex justify-center items-center">
+            <span class="loading loading-bars loading-lg"></span>
+        </div>
 </template>

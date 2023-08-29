@@ -21,7 +21,9 @@
 <template>
     <div class="flex flex-col h-full">
         <div class="py-3 container mb-7 flex justify-between items-center">
-            <UILogo />
+            <NuxtLink to="/">
+                <UILogo />
+            </NuxtLink>
 
             <div v-if="user" class="flex gap-4">
                 <UIDropDownDialog class="[&>.btn]:bg-transparent [&>.btn]:border-0 [&>.btn]:w-auto [&>.btn]:p-0 [&>.dropdown-content]:p-0">

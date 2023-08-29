@@ -1,6 +1,10 @@
 <script setup>
 import { useSystemStore } from '@/store'
 
+useHead({
+    title: "Register"
+})
+
 const client = useSupabaseClient();
 const system = useSystemStore();
 
