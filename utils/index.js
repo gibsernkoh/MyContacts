@@ -12,6 +12,20 @@ export const getDate = (num, unit) => {
   return nextDate;
 };
 
+export const getDiffBetweenToday = (date_str, unit) => {
+  const date_1 = new Date(date_str);
+  const date_2 = new Date();
+
+  let diff = (date_2.getTime() - date_1.getTime()) / 1000;
+
+  diff /= 60 * 60 * 24;
+
+  const result = Math.abs(Math.round(diff / 365.25));
+
+  console.log('result', result);
+  return result;
+};
+
 export const getName = (name) => {
   const { first, last } = name;
 

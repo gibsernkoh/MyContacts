@@ -1,6 +1,7 @@
 <script setup>
 import { useSystemStore } from '~/store';
-import { getDate } from '~/utils';
+import { getDate, getDiffBetweenToday } from '~/utils';
+import Countries from '~/assets/js/countries';
 
 defineProps({
   toggleMode: {
@@ -46,6 +47,17 @@ const init = {
       error: '',
     },
   },
+  country: {
+    label: 'Country',
+    required: true,
+    value: user_metadata?.country ?? '-',
+    input: {
+      type: 'select',
+      value: user_metadata?.country ?? '',
+      options: Countries,
+      error: '',
+    },
+  },
   postcode: {
     label: 'Postal Code',
     required: true,
@@ -54,6 +66,17 @@ const init = {
       type: 'input',
       value: user_metadata?.postcode,
       value_type: 'text',
+      error: '',
+    },
+  },
+  nationality: {
+    label: 'Nationality',
+    required: true,
+    value: user_metadata?.nationality ?? '-',
+    input: {
+      type: 'select',
+      value: user_metadata?.nationality ?? '',
+      options: Countries,
       error: '',
     },
   },
@@ -105,14 +128,16 @@ const onSave = async (_) => {
   const keys = Object.keys(fields.value);
 
   keys.forEach((key) => {
-    if (fields.value[key].required) {
-      const input = fields.value[key].input;
+    const input = fields.value[key].input;
 
+    if (fields.value[key].required) {
       if (input.value.trim() === '') {
         input.error = `${fields.value[key].label} is required`;
       } else if (['phone', 'postcode'].includes(key) && !+input.value) {
         input.error = `${fields.value[key].label} is invalid`;
       }
+    } else if ('dob' === key && getDiffBetweenToday(input.value, 'year') < 17) {
+      input.error = `You will have to be at least, 17 years old`;
     }
   });
 
