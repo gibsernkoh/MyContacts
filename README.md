@@ -5,9 +5,14 @@ New user will need to create an account.
 
 ## Stack
 
-This project is done using Nuxt3 for the FE (View) and BE(Controller) with Planetscale (Serverless Database)
+Nuxt3 + Supabase 
+
+## Note
+- The environment variable is not push to this repo.
+- Here is a (demo)[https://my-contacts-zeta.vercel.app/] deploy in vercel
 
 ### How to start
+- After creating a .env file for `SUPABASE_URL` and `SUPABASE_KEY`.
 
 ```bash
 
@@ -16,16 +21,3 @@ npm i
 npm run dev
 
 ```
-
-### Todos
-
-Pages exists in this app.
-| Page | Sub Sections| Status |
-|-------|-------|:------:|
-|Landing | - Login<br/> - Register
-|Dashboard | - Contact List (Grid Layout) <br/> - View Contact Information Dialog <br/> - Edit Contact Information Dialog <br/> - Add New Contact Information Dialog <br/> - Remove Contact Information Dialog
-| Profile |
-| Edit Profile |
-| Additional Details |
-| Spouse Details<br/>(Only for married users)
-| Personal Preferences
