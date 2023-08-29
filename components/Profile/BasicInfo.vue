@@ -16,7 +16,7 @@
 
     const system = useSystemStore();
     const client = useSupabaseClient();
-    const user = useSupabaseUser() 
+    const user = useSupabaseUser();
 
     const { email, user_metadata } = user.value
 

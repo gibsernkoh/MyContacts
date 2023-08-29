@@ -48,17 +48,19 @@ const toggleModeChange = (_) => (toggleMode.value = !toggleMode.value);
     <div class="lg:col-start-2 flex justify-between items-center">
       <h1>My <b>Profile</b></h1>
 
-      <button
-          v-if="toggleMode"
-          class="btn"
-          @click="toggleModeChange"
-          :disabled="loading"
-        >
-          Cancel
-        </button>
-        <button v-else class="btn" @click="toggleModeChange" :disabled="loading">
-          {{ isEditable ? 'Edit' : 'Add' }}
-        </button>
+      <div v-if="tab !== 3">
+          <button
+            v-if="toggleMode"
+            class="btn"
+            @click="toggleModeChange"
+            :disabled="loading"
+          >
+            Cancel
+          </button>
+          <button v-else class="btn" @click="toggleModeChange" :disabled="loading">
+            {{ isEditable ? 'Edit' : 'Add' }}
+          </button>
+      </div>
     </div>
 
     <div class="tabs profile-sidemenu">
