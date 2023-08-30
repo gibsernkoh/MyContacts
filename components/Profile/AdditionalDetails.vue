@@ -24,7 +24,7 @@ const { user_metadata } = user.value;
 
 const max_date = getDate(-17, 'year').toISOString().split('T')[0];
 
-const init = {
+const fields = ref({
   phone: {
     label: 'Mobile Number',
     required: true,
@@ -111,12 +111,10 @@ const init = {
       error: null,
     },
   },
-};
-
-const fields = ref(structuredClone(init));
+});
 
 const onSave = async (_) => {
-  emits('update:loading', true);
+  //emits('update:loading', true);
 
   // Validation
   const keys = Object.keys(fields.value);
@@ -125,19 +123,19 @@ const onSave = async (_) => {
 
   keys.forEach((key) => {
     const input = fields.value[key].input;
+    const field = fields.value[key];
 
-    if (fields.value[key].required) {
-      if (input.value.trim() === '') {
-        input.error = `${fields.value[key].label} is required`;
+    if (field.required) {
+      if (!input.value || !input.value.trim()) {
+        input.error = `${field.label} is required`;
       } else if (['phone', 'postcode'].includes(key) && !+input.value) {
-        input.error = `${fields.value[key].label} is invalid`;
+        input.error = `${field.label} is invalid`;
       }
     } else if ('dob' === key && getDiffBetweenToday(input.value, 'year') < 17) {
       input.error = `You will have to be at least, 17 years old`;
     }
 
-    if (input.error)
-      hasError = true
+    if (input.error) hasError = true;
   });
 
   if (!hasError) {

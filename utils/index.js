@@ -39,6 +39,8 @@ export const getAddress = (street) => {
 };
 
 export const getCompletePath = (filename) => {
+  if (!filename) return null;
+
   const runtimeConfig = useRuntimeConfig();
 
   return (
