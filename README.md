@@ -10,7 +10,7 @@ This is an exercise app to showcase the usage of Vue3 for a basic usage with api
 
 ## Demo
 
-- Here is a [demo](https://my-contacts-zeta.vercel.app/) deployed to Vercel
+- Here is a [demo](https://my-contacts-zeta.vercel.app/){:target="\_blank"} deployed to Vercel
 
 ### How to start
 
