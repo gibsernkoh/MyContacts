@@ -16,4 +16,7 @@ export default defineNuxtConfig({
       supabase_profile_folder: '/storage/v1/object/public/Profile/',
     },
   },
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+  },
 });

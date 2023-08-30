@@ -1,21 +1,22 @@
 <script setup>
-  import { useSystemStore } from '~/store';
-  import { storeToRefs } from 'pinia';
+import { useSystemStore } from '~/store';
+import { storeToRefs } from 'pinia';
 
-  const system = useSystemStore();
-  const { windowWidth } = storeToRefs(system);
+const system = useSystemStore();
 
-  const setWindowWidth = () => windowWidth.value = window.innerWidth;
+const { windowWidth } = storeToRefs(system);
 
-  onMounted(() => {
-    addEventListener('resize', setWindowWidth)
+const setWindowWidth = () => (windowWidth.value = window.innerWidth);
 
-    setWindowWidth()
-  })
+onMounted(() => {
+  addEventListener('resize', setWindowWidth);
 
-  onUnmounted(() => {
-    removeEventListener('resize', setWindowWidth)
-  })
+  setWindowWidth();
+});
+
+onUnmounted(() => {
+  removeEventListener('resize', setWindowWidth);
+});
 </script>
 
 <template>

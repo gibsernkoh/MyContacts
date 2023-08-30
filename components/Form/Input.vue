@@ -28,6 +28,10 @@ const props = defineProps({
     type: String,
     default: null,
   },
+  onEnter: {
+    type: Function,
+    default: null,
+  },
 });
 
 const emits = defineEmits(['update:value', 'update:error']);
@@ -52,11 +56,12 @@ const show = ref(false);
       class="h-[2.5rem] px-3 w-full"
       :disabled="disabled"
       :max="max"
+      @keyup.enter="onEnter"
     />
     <FormEye
       v-if="isPassword"
       v-model:show="show"
-      class="w-[2.5rem] shrink-0"
+      class="w-[2.5rem] shrink-0 cursor-pointer"
     />
   </div>
   <p v-if="error" class="text-error">{{ error }}</p>

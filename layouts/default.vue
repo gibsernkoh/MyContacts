@@ -20,7 +20,13 @@ const onLogout = async (_) => {
       type: 'error',
       message: error.message,
     });
-  else router.push('/');
+  else {
+    router.push('/');
+    system.push({
+      type: 'info',
+      message: 'You have logged out',
+    });
+  }
 };
 
 const handleClick = () => {
